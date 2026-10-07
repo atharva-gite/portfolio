@@ -1,27 +1,24 @@
-import Link from "next/link";
-
 export function SiteFooter({
   name,
-  role,
+  links,
 }: {
   name: string;
-  role: string;
+  links: readonly { href: string; label: string }[];
 }) {
   return (
     <footer className="site-footer">
       <div className="wrap footer-inner">
         <p className="footer-name">{name}</p>
-        <p className="footer-role">{role}</p>
         <nav aria-label="Footer">
           <ul className="footer-links">
-            <li>
-              <Link href="/projects/folio">Folio</Link>
-            </li>
-            <li>
-              <Link href="/projects/studyforge">StudyForge</Link>
-            </li>
+            {links.map((link) => (
+              <li key={link.href}>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
           </ul>
         </nav>
+        <p className="copyright">© Atharva Gite 2026</p>
       </div>
     </footer>
   );

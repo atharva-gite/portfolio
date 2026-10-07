@@ -1,21 +1,16 @@
-import type { Metadata } from "next";
-import { IBM_Plex_Mono, Newsreader, Source_Sans_3 } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { navigation, profile } from "@/lib/content";
+import { themeBootScript } from "@/lib/themes";
 import "./globals.css";
 
-const sans = Source_Sans_3({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-sans",
-});
-
-const serif = Newsreader({
+const sans = IBM_Plex_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   display: "swap",
-  variable: "--font-serif",
+  variable: "--font-sans",
 });
 
 const mono = IBM_Plex_Mono({
@@ -25,8 +20,6 @@ const mono = IBM_Plex_Mono({
   variable: "--font-mono",
 });
 
-const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}})();`;
-
 export const metadata: Metadata = {
   title: {
     default: profile.name,
@@ -35,27 +28,34 @@ export const metadata: Metadata = {
   description: profile.description,
 };
 
+export const viewport: Viewport = {
+  themeColor: "#0c1219",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${sans.variable} ${serif.variable} ${mono.variable}`}
+      className={`${sans.variable} ${mono.variable}`}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
       <body>
-        <noscript>
-          <style>{`.nav-toggle,.theme-toggle{display:none !important}#site-nav{display:block !important}`}</style>
-        </noscript>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+        <div className="atmosphere" aria-hidden="true">
+          <span className="atmosphere-glow" />
+          <span className="atmosphere-grid" />
+        </div>
         <a className="skip" href="#main">
           Skip to content
         </a>
-        <SiteHeader name={profile.name} links={navigation} />
+        <SiteHeader
+          name={profile.name}
+          email={profile.email}
+          links={navigation}
+        />
         {children}
-        <SiteFooter name={profile.name} role={profile.role} />
+        <SiteFooter name={profile.name} links={navigation} />
       </body>
     </html>
   );
