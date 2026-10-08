@@ -1,9 +1,12 @@
 import { AnimatedDetails } from "@/components/AnimatedDetails";
 import { DrawLine } from "@/components/DrawLine";
 import { ExternalLink } from "@/components/ExternalLink";
+import { HeroName } from "@/components/HeroName";
+import { BrandIcon, MailIcon, PhoneIcon } from "@/components/Icons";
+import { Magnetic } from "@/components/Magnetic";
 import { ProjectArticle } from "@/components/ProjectArticle";
 import { Reveal } from "@/components/Reveal";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { SpotSurface } from "@/components/SpotSurface";
 import {
   about,
   education,
@@ -23,30 +26,30 @@ export default function Home() {
     <main id="main">
       <div className="wrap">
         <header id="top" className="intro">
+          <svg
+            className="hero-trace"
+            viewBox="0 0 1200 180"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path
+              pathLength="1"
+              d="M0 132C96 132 168 124 248 108C348 88 410 66 512 56C630 44 724 34 860 28C1004 22 1104 20 1200 16"
+            />
+          </svg>
+          <HeroName name={profile.name} links={socialLinks.slice(0, 2)} />
+          <span className="name-rule" aria-hidden="true" />
           <p className="credential">{profile.credential}</p>
-          <h1>
-            {profile.name}
-            <span className="name-rule" aria-hidden="true" />
-          </h1>
           <p className="lede">{profile.lede}</p>
-          <ul className="intro-links">
-            <li>
-              <a href={`mailto:${profile.email}`}>{profile.email}</a>
-            </li>
-            {socialLinks.slice(0, 2).map((link) => (
-              <li key={link.href}>
-                <ExternalLink href={link.href}>{link.label}</ExternalLink>
-              </li>
-            ))}
-          </ul>
-          <ThemeToggle />
         </header>
 
         <section id="work" className="section">
-          <div className="section-heading">
-            <h2>Work</h2>
-            <p>{workIntro}</p>
-          </div>
+          <Reveal>
+            <div className="section-heading">
+              <h2>Work</h2>
+              <p>{workIntro}</p>
+            </div>
+          </Reveal>
           <div className="projects">
             {projects.map((project, index) => (
               <Reveal key={project.id} delay={index * 70}>
@@ -87,7 +90,7 @@ export default function Home() {
               <h2>Education</h2>
             </div>
             <div className="schools">
-              <article className="school">
+              <SpotSurface as="article" className="school">
                 <div className="role-head">
                   <h3>{education[0].school}</h3>
                   <p className="dates">{education[0].dates}</p>
@@ -102,9 +105,9 @@ export default function Home() {
                     ))}
                   </ul>
                 </AnimatedDetails>
-              </article>
+              </SpotSurface>
 
-              <article className="school">
+              <SpotSurface as="article" className="school">
                 <div className="role-head">
                   <h3>{education[1].school}</h3>
                   <p className="dates">{education[1].dates}</p>
@@ -127,7 +130,7 @@ export default function Home() {
                     </div>
                   ))}
                 </AnimatedDetails>
-              </article>
+              </SpotSurface>
             </div>
           </section>
         </Reveal>
@@ -142,8 +145,12 @@ export default function Home() {
                 <section key={group.title} className="skill-group">
                   <h3>{group.title}</h3>
                   <ul className="chips">
-                    {group.courses.map((item) => (
-                      <li key={item} className="chip">
+                    {group.courses.map((item, chipIndex) => (
+                      <li
+                        key={item}
+                        className="chip"
+                        style={{ ["--i" as string]: chipIndex }}
+                      >
                         {item}
                       </li>
                     ))}
@@ -167,17 +174,34 @@ export default function Home() {
             ))}
             <div id="contact" className="contact">
               <h3>Contact</h3>
-              <p className="contact-name">{profile.name}</p>
-              <a className="email-action" href={`mailto:${profile.email}`}>
-                {profile.email}
-              </a>
-              <ul className="contact-list">
-                <li>
-                  <a href={profile.phoneHref}>{profile.phone}</a>
+              <ul className="icon-row">
+                <li style={{ ["--i" as string]: 0 }}>
+                  <Magnetic>
+                    <a
+                      className="icon-link"
+                      href={`mailto:${profile.email}`}
+                      data-label="Email"
+                    >
+                      <MailIcon />
+                      <span className="visually-hidden">Email {profile.email}</span>
+                    </a>
+                  </Magnetic>
                 </li>
-                {socialLinks.map((link) => (
-                  <li key={link.href}>
-                    <ExternalLink href={link.href}>{link.label}</ExternalLink>
+                <li style={{ ["--i" as string]: 1 }}>
+                  <Magnetic>
+                    <a className="icon-link" href={profile.phoneHref} data-label="Phone">
+                      <PhoneIcon />
+                      <span className="visually-hidden">Phone {profile.phone}</span>
+                    </a>
+                  </Magnetic>
+                </li>
+                {socialLinks.map((link, index) => (
+                  <li key={link.href} style={{ ["--i" as string]: index + 2 }}>
+                    <Magnetic>
+                      <ExternalLink href={link.href} className="icon-link" label={link.label}>
+                        <BrandIcon href={link.href} />
+                      </ExternalLink>
+                    </Magnetic>
                   </li>
                 ))}
               </ul>

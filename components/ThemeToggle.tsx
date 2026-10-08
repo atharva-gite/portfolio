@@ -17,7 +17,7 @@ function subscribe(onStoreChange: () => void) {
   };
 }
 
-export function ThemeToggle() {
+export function ThemeToggle({ compact = false }: { compact?: boolean }) {
   const current = useSyncExternalStore(
     subscribe,
     readSiteTheme,
@@ -25,7 +25,11 @@ export function ThemeToggle() {
   );
 
   return (
-    <div className="theme-switch" role="radiogroup" aria-label="Color theme">
+    <div
+      className={compact ? "theme-switch is-compact" : "theme-switch"}
+      role="radiogroup"
+      aria-label="Color theme"
+    >
       {siteThemes.map((theme) => {
         const selected = current === theme.id;
         return (
@@ -34,6 +38,8 @@ export function ThemeToggle() {
             type="button"
             role="radio"
             aria-checked={selected}
+            aria-label={theme.label}
+            title={theme.label}
             className={selected ? "theme-option is-selected" : "theme-option"}
             onClick={() => applySiteTheme(theme.id)}
           >
@@ -42,7 +48,7 @@ export function ThemeToggle() {
               style={{ background: theme.swatch }}
               aria-hidden="true"
             />
-            {theme.label}
+            {compact ? null : theme.label}
           </button>
         );
       })}

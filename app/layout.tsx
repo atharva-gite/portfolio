@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { PointerGlow } from "@/components/PointerGlow";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { navigation, profile } from "@/lib/content";
@@ -44,7 +45,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
         <div className="atmosphere" aria-hidden="true">
           <span className="atmosphere-glow" />
+          <PointerGlow />
           <span className="atmosphere-grid" />
+          <svg className="atmosphere-grain">
+            <filter id="site-grain">
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.8"
+                numOctaves="2"
+                stitchTiles="stitch"
+              />
+            </filter>
+            <rect width="100%" height="100%" filter="url(#site-grain)" />
+          </svg>
         </div>
         <a className="skip" href="#main">
           Skip to content

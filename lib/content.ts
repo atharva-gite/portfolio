@@ -53,8 +53,7 @@ export const profile = {
   email: "atharva.gite@kcl.ac.uk",
   phone: "+44 7351160709",
   phoneHref: "tel:+447351160709",
-  credential:
-    "Computer Engineering, SPIT · MSc Advanced Computing, King's College London",
+  credential: "MSc Advanced Computing, King's College London",
   lede: "I build across software, machine learning, and markets. The part worth talking about is how the details hold up.",
   description:
     "Atharva Gite is a Computer Engineering graduate and MSc Advanced Computing student. Portfolio work spans software engineering, AI/ML, quantitative research, trading systems, and backend infrastructure.",

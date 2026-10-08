@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { CountFigure } from "@/components/CountFigure";
 import { ExternalLink } from "@/components/ExternalLink";
+import { Reveal } from "@/components/Reveal";
 import { ThemeScope } from "@/components/ThemeScope";
 import { projects } from "@/lib/content";
 
@@ -50,8 +51,8 @@ async function ProjectBody({ params }: ProjectPageProps) {
           <h1>{project.name}</h1>
           <p className="lede">{project.summary}</p>
           <ul className="chips" aria-label="Technologies">
-            {project.stack.map((item) => (
-              <li key={item} className="chip">
+            {project.stack.map((item, chipIndex) => (
+              <li key={item} className="chip" style={{ ["--i" as string]: chipIndex }}>
                 {item}
               </li>
             ))}
@@ -75,8 +76,9 @@ async function ProjectBody({ params }: ProjectPageProps) {
           </div>
         </header>
         <div className="project-detail page-detail">
-          {project.details.map((section) => (
-            <section key={section.heading} className="detail-block">
+          {project.details.map((section, sectionIndex) => (
+            <Reveal key={section.heading} delay={sectionIndex * 40}>
+            <section className="detail-block">
               <h2>{section.heading}</h2>
               {section.paragraphs?.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
@@ -99,6 +101,7 @@ async function ProjectBody({ params }: ProjectPageProps) {
                 </ul>
               ) : null}
             </section>
+            </Reveal>
           ))}
         </div>
       </div>

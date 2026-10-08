@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 type NavLink = {
   href: string;
@@ -21,6 +22,7 @@ export function SiteHeader({
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("");
   const listRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLSpanElement>(null);
   const [bar, setBar] = useState({ x: 0, width: 0, visible: false });
 
   useEffect(() => {
@@ -29,6 +31,12 @@ export function SiteHeader({
     const update = () => {
       frame = 0;
       setScrolled(window.scrollY > 8);
+      const progress = progressRef.current;
+      if (progress) {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const amount = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+        progress.style.transform = `scaleX(${amount})`;
+      }
 
       const offset = 96;
       let current = document.getElementById("work") ? (links[0]?.href ?? "") : "";
@@ -115,6 +123,7 @@ export function SiteHeader({
           {name}
         </Link>
         <div className="header-actions">
+          <ThemeToggle compact />
           <a className="email-action" href={`mailto:${email}`}>
             Email
           </a>
@@ -159,6 +168,7 @@ export function SiteHeader({
           </div>
         </nav>
       </div>
+      <span ref={progressRef} className="scroll-progress" aria-hidden="true" />
     </header>
   );
 }

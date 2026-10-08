@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CountFigure } from "@/components/CountFigure";
 import { ExternalLink } from "@/components/ExternalLink";
+import { SpotSurface } from "@/components/SpotSurface";
 import type { Project } from "@/lib/content";
 
 export function ProjectArticle({
@@ -11,7 +12,13 @@ export function ProjectArticle({
   index: number;
 }) {
   return (
-    <article id={project.id} className="project" data-theme={project.theme}>
+    <SpotSurface
+      as="article"
+      id={project.id}
+      className="project"
+      data-theme={project.theme}
+      tilt
+    >
       <p className="project-kicker">
         <span>{String(index).padStart(2, "0")}</span>
         {project.category}
@@ -22,8 +29,10 @@ export function ProjectArticle({
         </h3>
         <p className="summary">{project.summary}</p>
         <ul className="points">
-          {project.points.map((point) => (
-            <li key={point}>{point}</li>
+          {project.points.map((point, pointIndex) => (
+            <li key={point} style={{ ["--i" as string]: pointIndex }}>
+              {point}
+            </li>
           ))}
         </ul>
         {project.figures ? (
@@ -37,8 +46,12 @@ export function ProjectArticle({
           </ul>
         ) : null}
         <ul className="chips" aria-label="Technologies">
-          {project.stack.map((item) => (
-            <li key={item} className="chip">
+          {project.stack.map((item, chipIndex) => (
+            <li
+              key={item}
+              className="chip"
+              style={{ ["--i" as string]: chipIndex }}
+            >
               {item}
             </li>
           ))}
@@ -51,6 +64,6 @@ export function ProjectArticle({
           ))}
         </div>
       </div>
-    </article>
+    </SpotSurface>
   );
 }
